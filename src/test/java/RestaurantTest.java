@@ -46,11 +46,35 @@ class RestaurantTest {
     @Test
     public void order_value_should_reduce_in_total_when_an_item_removed(){
         restaurantCreate();
+        spoof = restaurant.getMenu();
         int total = restaurant.getOrderValue(spoof);
         int afterTotal = spoof.get(1).getPrice();
         spoof.remove(1);
         assertEquals(total-afterTotal,restaurant.getOrderValue(spoof));
     }
+
+    @Test
+    public void item_added_to_menu_should_return_the_price_greater_than_zero() {
+        restaurantCreate();
+
+        restaurant.addToMenu("Tangdi Kabab",210);
+
+        int price = restaurant.getSelectedItemPrice();
+
+        assertEquals(598, price);
+    }
+
+    @Test
+    public void item_not_added_to_menu_should_return_zero() {
+        LocalTime openingTime = LocalTime.parse("10:30:00");
+        LocalTime closingTime = LocalTime.parse("22:00:00");
+        restaurant =new Restaurant("Amelie's cafe","Chennai",openingTime,closingTime);
+
+        int price = restaurant.getSelectedItemPrice();
+
+        assertEquals(0, price);
+    }
+
     //<<<<<<<<<<<<<<<<<<<<<<<<<ORDER VALUE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>MENU<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
